@@ -86,20 +86,73 @@ steps 是字符串数组,
 <text>阳光斜斜地穿过窗棂，在木地板上投下细长的光影，灰尘的微粒在光柱里缓缓浮游，像极了水里散开的茶毫。窗外的梧桐叶被风翻动，发出细碎的沙沙声，偶尔有一两片影子掠过桌面，又很快溜走了。</text>
 """
 
-step_reply = get_completion(step_input, output_fmt=True)
-no_step_reply = get_completion(no_step_input, output_fmt=True)
+# step_reply = get_completion(step_input, json_mode=True)
+# no_step_reply = get_completion(no_step_input, json_mode=True)
 
-data1 = json.loads(step_reply)
-data2 = json.loads(no_step_reply)
+# data1 = json.loads(step_reply)
+# data2 = json.loads(no_step_reply)
 
-if not data1["has_steps"]:
-    print("请输入包含操作步骤的内容")
-else:
-    print(data1["steps"])
-    print("已保存step_reply")
+# if not data1["has_steps"]:
+#     print("请输入包含操作步骤的内容")
+# else:
+#     print(data1["steps"])
+#     print("已保存step_reply")
 
-if not data2["has_steps"]:
-    print("请输入包含操作步骤的内容")
-else:
-    print(data2["steps"])
-    print("已保存no_step_reply")
+# if not data2["has_steps"]:
+#     print("请输入包含操作步骤的内容")
+# else:
+#     print(data2["steps"])
+#     print("已保存no_step_reply")
+
+
+# -------------以下是few shot实验-------------
+
+
+zero_shot_input = """
+用严谨科学的语言，向一个没有计算机知识的人介绍一些专有词汇,不要回答太多，一句话就够了。
+这是问题：请解释什么是API？
+"""
+
+few_shot_input = [
+    {"role": "user", "content": "什么是变量？"},
+    {"role": "assistant", "content": "在计算机科学中，变量是一个由名称标识的、用于存储数据的存储位置，其内容在程序运行过程中可以改变。"},
+    {"role": "user", "content": "什么是 API？"},
+]
+
+# reply1 = get_completion(zero_shot_input)
+# reply2 = get_completion(few_shot_input)
+
+# print("这是reply1: ", reply1)
+# print("这是reply2: ", reply2)
+
+
+more_few_shot_input = [
+    {"role": "user", "content": "什么是变量？"},
+    {"role": "assistant", "content": "在计算机科学中，变量是一个由名称标识的、用于存储数据的存储位置，其内容在程序运行过程中可以改变。"},
+    {"role": "user", "content": "什么是函数？"},
+    {"role": "assistant", "content": "在计算机科学中，函数是一段被命名的、可重复调用的代码，它接收输入参数，执行特定操作，并可返回一个结果。"},
+    {"role": "user", "content": "什么是数据库？"},
+    {"role": "assistant", "content": "在计算机科学中，数据库是按照一定结构组织、可被程序高效存储、检索和管理的数据集合。"},
+    {"role": "user", "content": "什么是 API？"},
+]
+
+instruct_few_shot_input = [
+    {"role": "system", "content": "你是一名术语解释助手。请严格模仿之前回答的风格和长度：只用一句严谨的科学定义回答，不使用比喻、列表、标题或代码。"},
+    {"role": "user", "content": "什么是变量？"},
+    {"role": "assistant", "content": "在计算机科学中，变量是一个由名称标识的、用于存储数据的存储位置，其内容在程序运行过程中可以改变。"},
+    {"role": "user", "content": "什么是 API？"},
+]
+
+# reply_a = get_completion(more_few_shot_input)
+# reply_b = get_completion(instruct_few_shot_input)
+
+# print("改法 A（三组例子）：", reply_a)
+# print("改法 B（一组例子 + system）：", reply_b)
+
+instruct_input = [
+    {"role": "system", "content": "你是一名术语解释助手。请只用一句严谨的科学定义回答，不使用比喻、列表、标题或代码。"},
+    {"role": "user", "content": "什么是 API？"},
+]
+
+reply_c = get_completion(instruct_input)
+print("改法 C（只有system）：", reply_c)

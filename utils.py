@@ -16,9 +16,15 @@ def get_client():
 
 client = get_client()
 
-def get_completion(prompt, output_fmt=False, model="deepseek-flash"):
-    messages = [{"role": "user", "content": prompt}]
-    if output_fmt == False:
+def get_completion(prompt, json_mode=False, model="deepseek-flash"):
+    if isinstance(prompt, str):
+        messages = [{"role": "user", "content": prompt}]
+    elif isinstance(prompt, list):
+        messages = prompt
+    else:
+        raise TypeError("Unrecognized prompt type, allow string and list only.")
+
+    if not json_mode:
         fmt =  { "type": "text" } 
     else:
         fmt =  { "type": "json_object" } 
