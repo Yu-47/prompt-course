@@ -1,18 +1,6 @@
-from utils import get_client
+from utils import *
 
 client = get_client()
-
-def get_completion(prompt, model="deepseek-flash"):
-    messages = [{"role": "user", "content": prompt}]
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0,
-    )
-    # print(response)
-
-    return response.choices[0].message.content
-
 
 def fake_mutip_round_conversation(model="deepseek-flash"):
     messages = [
@@ -30,8 +18,10 @@ def fake_mutip_round_conversation(model="deepseek-flash"):
 
     return response.choices[0].message.content
 
-# print(get_completion("用一句话解释什么是大语言模型"))
-# print(fake_mutip_round_conversation())
+print(get_completion("用一句话解释什么是大语言模型"))
+print(fake_mutip_round_conversation())
+
+# -------------以下是多轮对话-------------
 
 messages_list = []
 def mutip_round_conversation(input_messages, model="deepseek-flash"):
