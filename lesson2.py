@@ -154,5 +154,13 @@ instruct_input = [
     {"role": "user", "content": "什么是 API？"},
 ]
 
-reply_c = get_completion(instruct_input)
-print("改法 C（只有system）：", reply_c)
+# reply_c = get_completion(instruct_input)
+# print("改法 C（只有system）：", reply_c)
+
+# -------------以下是幻觉Hallucination实验-------------
+
+fake_prompt = "请你介绍一下博伊（Boie）的AeroGlide UltraSlim智能牙刷。"
+fake_prompt_with_instruct = "请你介绍一下博伊（Boie）的AeroGlide UltraSlim智能牙刷。如果你不确定它是否存在，请直接说不知道。"
+
+print("版本一: ", get_completion(fake_prompt))
+print("版本二: ", get_completion(fake_prompt_with_instruct))
